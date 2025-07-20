@@ -10,14 +10,14 @@ class Port:
     def get_port_list(self) -> list:
         self.portsList = []
         for port in self.ports:
-            self.portsList.append(str(port))
+            self.portsList.append(str(port.device))
         return self.portsList
 
 
-    def connect(self, com: int):
+    def connect(self, com):
         for i in range(len(self.portsList)):
-            if self.portsList[i].startswith("COM" + str(com)):
-                use = "COM" + str(com)
+            if self.portsList[i].startswith(com):
+                use = str(com)
         self.serialInst.baudrate = 9600
         self.serialInst.port = use
         self.serialInst.open()
