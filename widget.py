@@ -2,6 +2,7 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QWidget
+import port
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
@@ -14,6 +15,9 @@ class Widget(QWidget):
         super().__init__(parent)
         self.ui = Ui_Widget()
         self.ui.setupUi(self)
+
+        self.port = port.Port()
+        self.ui.portsList.addItems(self.port.get_port_list())
 
 
 if __name__ == "__main__":

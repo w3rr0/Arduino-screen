@@ -1,17 +1,17 @@
 import serial.tools.list_ports
 
 
-class port:
+class Port:
     def __init__(self):
         self.ports = serial.tools.list_ports.comports()
         self.serialInst = serial.Serial()
         self.portsList = []
 
-    def get_port_listv(self) -> list:
+    def get_port_list(self) -> list:
         self.portsList = []
         for port in self.ports:
-            self.portList.append(str(port))
-        return self.portList
+            self.portsList.append(str(port))
+        return self.portsList
 
 
     def connect(self, com: int):
