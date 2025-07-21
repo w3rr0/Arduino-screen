@@ -30,6 +30,7 @@ class Widget(QWidget):
         self.ui.upper.addItems(self.content.options)
         self.ui.lower.addItems(self.content.options)
         self.ui.upper.currentTextChanged.connect(self.on_upper_changed)
+        self.ui.lower.currentTextChanged.connect(self.on_lower_changed)
 
         self.ui.display.clicked.connect(self.on_display_clicked)
 
@@ -45,6 +46,13 @@ class Widget(QWidget):
             print("new date upper")
         elif new_data == "time":
             print("new time upper")
+
+    @Slot(str)
+    def on_lower_changed(self, new_data):
+        if new_data == "date":
+            print("new date lower")
+        elif new_data == "time":
+            print("new time lower")
 
     def on_display_clicked(self):
         # match (self.ui.upper.currentText()):
