@@ -1,3 +1,4 @@
+# This Python file uses the following encoding: utf-8
 import serial.tools.list_ports
 
 
@@ -14,7 +15,7 @@ class Port:
         return self.portsList
 
 
-    def connect(self, com):
+    def connect(self, com) -> None:
         for i in range(len(self.portsList)):
             if self.portsList[i].startswith(com):
                 use = str(com)

@@ -1,6 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import sys
 import port
+import content
 
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtCore import Slot
@@ -19,15 +20,26 @@ class Widget(QWidget):
         self.ui.setupUi(self)
 
         self.port = port.Port()
-        self.ui.portsList.addItems(self.port.get_port_list())
+        self.content = content.Content()
 
+        self.ui.portsList.addItems(self.port.get_port_list())
         self.ui.portsList.currentTextChanged.connect(self.on_portsList_changed)
 
+        self.ui.upper.addItems(self.content.options)
+        self.ui.lower.addItems(self.content.options)
+
+        self.ui.display.clicked.connect(self.on_display_clicked)
+
     @Slot(str)
-    def on_portsList_changed(self, new_text):
+    def on_portsList_changed(self, new_com):
         """Ten slot jest wywoływany automatycznie po zmianie portsList."""
         print(f"Wybrano: {new_text}")
-        self.port.connect(new_text)
+        self.port.connect(new_com)
+
+    def on_display_clicked(self):
+        print("clicked")
+
+
 
 
 if __name__ == "__main__":
