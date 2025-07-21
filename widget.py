@@ -44,15 +44,19 @@ class Widget(QWidget):
     def on_upper_changed(self, new_data):
         if new_data == "date":
             print("new date upper")
+            self.content.add_date(0)
         elif new_data == "time":
             print("new time upper")
+            self.content.add_time(0)
 
     @Slot(str)
     def on_lower_changed(self, new_data):
         if new_data == "date":
             print("new date lower")
+            self.content.add_date(1)
         elif new_data == "time":
             print("new time lower")
+            self.content.add_time(1)
 
     def on_display_clicked(self):
         # match (self.ui.upper.currentText()):

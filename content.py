@@ -9,10 +9,12 @@ class Content:
 
     def add_time(self, row: int):
         time = datetime.now()
+        time = time.strftime("%H:%M")
         self.content[row] = time
 
     def add_date(self, row: int):
         date = datetime.now()
+        date = date.strftime("%d.%m.%Y")
         self.content[row] = date
 
     def get_content(self):
