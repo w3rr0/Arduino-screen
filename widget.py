@@ -22,11 +22,14 @@ class Widget(QWidget):
         self.port = port.Port()
         self.content = content.Content()
 
+        # Add options to connect
         self.ui.portsList.addItems(self.port.get_port_list())
         self.ui.portsList.currentTextChanged.connect(self.on_portsList_changed)
 
+        # Add options to display
         self.ui.upper.addItems(self.content.options)
         self.ui.lower.addItems(self.content.options)
+        self.ui.upper.currentTextChanged.connect(self.on_upper_changed)
 
         self.ui.display.clicked.connect(self.on_display_clicked)
 
@@ -36,8 +39,18 @@ class Widget(QWidget):
         print(f"Wybrano: {new_text}")
         self.port.connect(new_com)
 
+    @Slot(str)
+    def on_upper_changed(self, new_data):
+        if new_data == "date":
+            print("new date upper")
+        elif new_data == "time":
+            print("new time upper")
+
     def on_display_clicked(self):
-        print("clicked")
+        # match (self.ui.upper.currentText()):
+        #     case "date":
+        #         print()
+        print(self.content.get_content())
 
 
 
