@@ -37,7 +37,7 @@ class Widget(QWidget):
     @Slot(str)
     def on_portsList_changed(self, new_com):
         """Ten slot jest wywoływany automatycznie po zmianie portsList."""
-        print(f"Wybrano: {new_text}")
+        print(f"Wybrano: {new_com}")
         self.port.connect(new_com)
 
     @Slot(str)
@@ -59,9 +59,7 @@ class Widget(QWidget):
             self.content.add_time(1)
 
     def on_display_clicked(self):
-        # match (self.ui.upper.currentText()):
-        #     case "date":
-        #         print()
+        self.port.display("".join(self.content.get_content()))
         print(self.content.get_content())
 
 
