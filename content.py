@@ -18,8 +18,8 @@ class Content:
         self.content[row] = date
 
     def get_content(self):
-        print([item.ljust(16) for item in self.content])
-        return [item.ljust(16) for item in self.content]
+        print([item.center(16) for item in self.content])
+        return [item.center(16) for item in self.content]
 
 
 
