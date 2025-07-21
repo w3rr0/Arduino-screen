@@ -1,5 +1,6 @@
 # This Python file uses the following encoding: utf-8
 import serial.tools.list_ports
+from time import sleep
 
 
 class Port:
@@ -22,6 +23,9 @@ class Port:
         self.serialInst.baudrate = 9600
         self.serialInst.port = use
         self.serialInst.open()
+        # Time needed to establish connection
+        sleep(1.5)
+        self.display("Connected".center(16))
 
 
     def display(self, text: str):

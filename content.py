@@ -5,7 +5,7 @@ from datetime import datetime
 class Content:
     def __init__(self):
         self.content = ["",""]
-        self.options = ["time", "date"]
+        self.options = ["Not Selected", "Time", "Date"]
 
     def add_time(self, row: int):
         time = datetime.now()
@@ -16,6 +16,9 @@ class Content:
         date = datetime.now()
         date = date.strftime("%d.%m.%Y")
         self.content[row] = date
+
+    def clear_row(self, row: int):
+        self.content[row] = ""
 
     def get_content(self):
         print([item.center(16) for item in self.content])

@@ -19,6 +19,7 @@ class Widget(QWidget):
         self.ui = Ui_Widget()
         self.ui.setupUi(self)
 
+        # Initialize program objects
         self.port = port.Port()
         self.content = content.Content()
 
@@ -34,29 +35,39 @@ class Widget(QWidget):
 
         self.ui.display.clicked.connect(self.on_display_clicked)
 
+
     @Slot(str)
     def on_portsList_changed(self, new_com):
         """Ten slot jest wywoływany automatycznie po zmianie portsList."""
         print(f"Wybrano: {new_com}")
         self.port.connect(new_com)
 
+
     @Slot(str)
     def on_upper_changed(self, new_data):
-        if new_data == "date":
+        if new_data == "Date":
             print("new date upper")
             self.content.add_date(0)
-        elif new_data == "time":
+        elif new_data == "Time":
             print("new time upper")
             self.content.add_time(0)
+        elif new_data == "Not Selected":
+            print("Clear row upper")
+            self.content.clear_row(0)
+
 
     @Slot(str)
     def on_lower_changed(self, new_data):
-        if new_data == "date":
+        if new_data == "Date":
             print("new date lower")
             self.content.add_date(1)
-        elif new_data == "time":
+        elif new_data == "Time":
             print("new time lower")
             self.content.add_time(1)
+        elif new_data == "Not Selected":
+            print("Clear row lower")
+            self.content.clear_row(1)
+
 
     def on_display_clicked(self):
         self.port.display("".join(self.content.get_content()))
