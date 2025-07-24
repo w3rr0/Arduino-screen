@@ -1,28 +1,60 @@
 # This Python file uses the following encoding: utf-8
 from datetime import datetime
+from PySide6.QtCore import QTimer, QObject, Signal
 
 
-class Content:
-    def __init__(self):
+class Content(QObject):
+    content_to_update = Signal(list)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.content = ["",""]
         self.options = ["Not Selected", "Time", "Date"]
+        self.selected = ["Not Selected", "Not Selected"]
+
+        self.minute_monitor = QTimer(self)
+        self.minute_monitor.setInterval(1000)
+        self.minute_monitor.timeout.connect(self._check_minute_change)
+        self._last_minute = datetime.now().minute
+        self.minute_monitor.start()
+
+    def _check_minute_change(self):
+            """Metoda wywoływana przez QTimer co sekundę, sprawdza zmianę minuty."""
+            current_minute = datetime.now().minute
+            if current_minute != self._last_minute:
+                self._last_minute = current_minute
+                print(f"Minuta się zmieniła! Czas: {datetime.now().strftime('%H:%M')}")
+                # Tutaj możesz wywołać metody aktualizujące zawartość,
+                # jeśli np. "Time" lub "Date" jest wybrane w opcjach
+
+                #self._update_time_and_date_content()
+                #self.content_updated.emit()
+
+                self.add_time(0)
+
 
     def add_time(self, row: int):
         time = datetime.now()
         time = time.strftime("%H:%M")
         self.content[row] = time
 
+
     def add_date(self, row: int):
         date = datetime.now()
         date = date.strftime("%d.%m.%Y")
         self.content[row] = date
 
+
     def clear_row(self, row: int):
         self.content[row] = ""
+
 
     def get_content(self):
         print([item.center(16) for item in self.content])
         return [item.center(16) for item in self.content]
+
+
+
 
 
 
