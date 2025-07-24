@@ -33,10 +33,13 @@ class Widget(QWidget):
         self.ui.upper.currentTextChanged.connect(self.on_upper_changed)
         self.ui.lower.currentTextChanged.connect(self.on_lower_changed)
 
+        # Connect display button
         self.ui.display.clicked.connect(self.on_display_clicked)
 
+        # Connect auto refresh func to slot
         self.content.content_to_update.connect(self.port.auto_update)
 
+        # Display "Disconnected" after app close
         app = QApplication.instance()
         app.aboutToQuit.connect(lambda: self.port.display("Disconnected".center(16)))
 
