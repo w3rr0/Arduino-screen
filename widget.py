@@ -37,6 +37,9 @@ class Widget(QWidget):
 
         self.content.content_to_update.connect(self.port.auto_update)
 
+        app = QApplication.instance()
+        app.aboutToQuit.connect(lambda: self.port.display("Disconnected".center(16)))
+
 
     @Slot(str)
     def on_portsList_changed(self, new_com):
