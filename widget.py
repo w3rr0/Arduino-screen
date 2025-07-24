@@ -35,6 +35,8 @@ class Widget(QWidget):
 
         self.ui.display.clicked.connect(self.on_display_clicked)
 
+        self.content.content_to_update.connect(self.port.auto_update)
+
 
     @Slot(str)
     def on_portsList_changed(self, new_com):

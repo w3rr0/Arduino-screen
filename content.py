@@ -24,13 +24,9 @@ class Content(QObject):
             if current_minute != self._last_minute:
                 self._last_minute = current_minute
                 print(f"Minuta się zmieniła! Czas: {datetime.now().strftime('%H:%M')}")
-                # Tutaj możesz wywołać metody aktualizujące zawartość,
-                # jeśli np. "Time" lub "Date" jest wybrane w opcjach
 
-                #self._update_time_and_date_content()
-                #self.content_updated.emit()
-
-                self.add_time(0)
+                self.add_time(0) # Zamienić na metodę która automatycznie decyduje co i gdzie zmieniać
+                self.content_to_update.emit(self.get_content())
 
 
     def add_time(self, row: int):
