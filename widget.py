@@ -38,6 +38,7 @@ class Widget(QWidget):
 
         # Connect auto refresh func to slot
         self.content.content_to_update.connect(self.port.auto_update)
+        self.content.content_to_update.connect(self.update_display_labels)
 
         # Display "Disconnected" after app close
         app = QApplication.instance()
@@ -77,9 +78,16 @@ class Widget(QWidget):
             self.content.clear_row(1)
 
 
+    @Slot(list)
+    def update_display_labels(self, new_data):
+        self.ui.row_0.setText(new_data[0])
+        self.ui.row_1.setText(new_data[1])
+
+
     def on_display_clicked(self):
         self.port.display("".join(self.content.get_content()))
         print(self.content.get_content())
+        self.content.content_to_update.emit(self.content.get_content())
 
 
 
