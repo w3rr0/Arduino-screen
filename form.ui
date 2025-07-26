@@ -12,7 +12,7 @@
   </property>
   <property name="font">
    <font>
-    <family>GB18030 Bitmap</family>
+    <family>Microsoft Sans Serif</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -88,41 +88,66 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_2">
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>230</y>
+     <width>221</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>arduino_screen_frame.jpeg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="row_0">
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>180</y>
-     <width>160</width>
-     <height>51</height>
+     <y>260</y>
+     <width>161</width>
+     <height>16</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLabel" name="row_0">
-      <property name="font">
-       <font>
-        <family>Andale Mono</family>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="row_1">
-      <property name="font">
-       <font>
-        <family>Andale Mono</family>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="font">
+    <font>
+     <family>Andale Mono</family>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="row_1">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>270</y>
+     <width>161</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Andale Mono</family>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources/>
