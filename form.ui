@@ -10,6 +10,11 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>GB18030 Bitmap</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
@@ -22,6 +27,11 @@
      <height>41</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Sans Serif</family>
+    </font>
+   </property>
   </widget>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
@@ -29,15 +39,27 @@
      <x>310</x>
      <y>340</y>
      <width>160</width>
-     <height>136</height>
+     <height>138</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QComboBox" name="upper"/>
+     <widget class="QComboBox" name="upper">
+      <property name="font">
+       <font>
+        <family>Microsoft Sans Serif</family>
+       </font>
+      </property>
+     </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="lower"/>
+     <widget class="QComboBox" name="lower">
+      <property name="font">
+       <font>
+        <family>Microsoft Sans Serif</family>
+       </font>
+      </property>
+     </widget>
     </item>
     <item>
      <spacer name="horizontalSpacer">
@@ -54,6 +76,11 @@
     </item>
     <item>
      <widget class="QPushButton" name="display">
+      <property name="font">
+       <font>
+        <family>Microsoft Sans Serif</family>
+       </font>
+      </property>
       <property name="text">
        <string>Display</string>
       </property>
@@ -73,6 +100,11 @@
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QLabel" name="row_0">
+      <property name="font">
+       <font>
+        <family>Andale Mono</family>
+       </font>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -80,6 +112,11 @@
     </item>
     <item>
      <widget class="QLabel" name="row_1">
+      <property name="font">
+       <font>
+        <family>Andale Mono</family>
+       </font>
+      </property>
       <property name="text">
        <string/>
       </property>
