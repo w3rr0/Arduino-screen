@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import serial.tools.list_ports
 from time import sleep
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import QObject, Slot, QTimer
 
 
 class Port(QObject):
@@ -28,8 +28,7 @@ class Port(QObject):
         self.serialInst.open()
         self.connected_port = com
         # Time needed to establish connection
-        sleep(1.5)
-        self.display("Connected".center(16))
+        QTimer.singleShot(1500, lambda: self.display("Connected".center(16)))
 
 
     def display(self, text: str):
