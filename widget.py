@@ -47,13 +47,14 @@ class Widget(QWidget):
 
     @Slot(str)
     def on_portsList_changed(self, new_com):
-        """Ten slot jest wywoływany automatycznie po zmianie portsList."""
+        """Automatically connects the port when selected"""
         print(f"Wybrano: {new_com}")
         self.port.connect(new_com)
 
 
     @Slot(str)
     def on_upper_changed(self, new_data):
+        """Automatically changes the upper content when selected"""
         if new_data == "Date":
             print("new date upper")
             self.content.add_date(0)
@@ -67,6 +68,7 @@ class Widget(QWidget):
 
     @Slot(str)
     def on_lower_changed(self, new_data):
+        """Automatically changes the lower content when selected"""
         if new_data == "Date":
             print("new date lower")
             self.content.add_date(1)
@@ -80,11 +82,13 @@ class Widget(QWidget):
 
     @Slot(list)
     def update_display_labels(self, new_data):
+        """Displays the current text from the arduino screen"""
         self.ui.row_0.setText(new_data[0])
         self.ui.row_1.setText(new_data[1])
 
 
     def on_display_clicked(self):
+        """Displays the currently selected option on the arduino screen"""
         self.port.display("".join(self.content.get_content()))
         print(self.content.get_content())
         self.content.content_to_update.emit(self.content.get_content())
