@@ -1,3 +1,4 @@
 .qtcreator/
 pyproject.toml.user
 ui_form.py
+.DS_Store
