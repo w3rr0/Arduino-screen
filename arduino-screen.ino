@@ -3,6 +3,7 @@
 
 // adres I2C (najczęściej 0x27 lub 0x3F), szerokość 16, wysokość 2
 LiquidCrystal_I2C lcd(0x27, 16, 2);
+const int LCD_WIDTH = 16;
 
 void setup() {
   Serial.begin(9600);
@@ -10,7 +11,7 @@ void setup() {
   lcd.init();              // Inicjalizacja LCD
   lcd.backlight();         // Włączenie podświetlenia
   lcd.setCursor(0, 0);     // Ustaw kursor na początku pierwszej linii
-  lcd.print("Disconnected");
+  lcd.print("  Disconnected  ");
 }
 
 void loop() {
@@ -20,12 +21,12 @@ void loop() {
     // Wyczyść ekran przed wyświetleniem nowej wiadomości
     lcd.clear();
 
-    if (msg.length() > 16) {
+    if (msg.length() > LCD_WIDTH) {
       // Pobierz pierwszą część wiadomości (16 znaków)
-      String firstLine = msg.substring(0, 16);
+      String firstLine = msg.substring(0, LCD_WIDTH);
       
       // Pobierz resztę wiadomości
-      String secondLine = msg.substring(16);
+      String secondLine = msg.substring(LCD_WIDTH);
 
       // Wyświetl pierwszą część na górnej linijce
       lcd.setCursor(0, 0);
