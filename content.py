@@ -1,6 +1,9 @@
 # This Python file uses the following encoding: utf-8
+import openmeteo_requests
+import requests_cache
 from datetime import datetime
 from PySide6.QtCore import QTimer, QObject, Signal
+from retry_requests import retry
 
 
 class Content(QObject):
@@ -9,7 +12,7 @@ class Content(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.content = ["",""]
-        self.options = ["Not Selected", "Time", "Date"]
+        self.options = ["Not Selected", "Time", "Date", "Weather"]
         self.selected = ["Not Selected", "Not Selected"]
 
         self.minute_monitor = QTimer(self)
@@ -17,6 +20,12 @@ class Content(QObject):
         self.minute_monitor.timeout.connect(self._check_minute_change)
         self._last_minute = datetime.now().minute
         self.minute_monitor.start()
+
+        # Setup the Open-Meteo API client with cache and retry on error
+        self.cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+        self.retry_session = retry(self.cache_session, retries = 5, backoff_factor = 0.2)
+        self.openmeteo = openmeteo_requests.Client(session = self.retry_session)
+        self.url = "https://api.open-meteo.com/v1/forecast"
 
     def _check_minute_change(self):
         """Metoda wywoływana przez QTimer co sekundę, sprawdza zmianę minuty."""
@@ -36,6 +45,8 @@ class Content(QObject):
                 self.add_time(row)
             elif self.selected[row] == "Date":
                 self.add_date(row)
+            elif self.selected[row] == "Weather":
+                self.add_temperature(row)
 
 
     def add_time(self, row: int):
@@ -50,6 +61,19 @@ class Content(QObject):
         date = date.strftime("%d.%m.%Y")
         self.content[row] = date
         self.selected[row] = "Date"
+
+
+    def add_temperature(self, row: int):
+        params = {
+                "latitude": 52.52,
+                "longitude": 13.41,
+                "current_weather": True
+        }
+        responses = self.openmeteo.weather_api(self.url, params=params)
+        response = responses[0]
+        current_weather = response.CurrentWeather()
+        self.content[row] = f"{current_weather.Temperature()}°C"
+        self.selected[row] = "Weather"
 
 
     def clear_row(self, row: int):

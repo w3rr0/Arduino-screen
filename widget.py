@@ -61,6 +61,9 @@ class Widget(QWidget):
         elif new_data == "Time":
             print("new time upper")
             self.content.add_time(0)
+        elif new_data == "Weather":
+            print("new weather upper")
+            self.content.add_temperature(0)
         elif new_data == "Not Selected":
             print("Clear row upper")
             self.content.clear_row(0)
@@ -75,6 +78,9 @@ class Widget(QWidget):
         elif new_data == "Time":
             print("new time lower")
             self.content.add_time(1)
+        elif new_data == "Weather":
+            print("new weather lower")
+            self.content.add_temperature(1)
         elif new_data == "Not Selected":
             print("Clear row lower")
             self.content.clear_row(1)
