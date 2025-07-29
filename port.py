@@ -1,9 +1,11 @@
 # This Python file uses the following encoding: utf-8
 import serial.tools.list_ports
-from PySide6.QtCore import QObject, Slot, QTimer
+from PySide6.QtCore import QObject, Slot, QTimer, Signal
 
 
 class Port(QObject):
+    arduino_ready = Signal(bool)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ports = serial.tools.list_ports.comports()
@@ -29,8 +31,13 @@ class Port(QObject):
         self.serialInst.port = use
         self.serialInst.open()
         self.connected_port = com
-        # Time needed to establish connection
-        QTimer.singleShot(1500, lambda: self.display("Connected".center(16)))
+        for _ in range(50): # 50 times * 100ms = 5 seconds
+            line = self.serialInst.readline().decode('utf-8').strip()
+            if line == "READY":
+                self.display("Connected".center(16))
+                self.arduino_ready.emit(True)
+                break
+            QTimer.singleShot(100, lambda: None)
 
 
     # Display text on arduino screen

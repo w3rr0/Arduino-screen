@@ -30,7 +30,7 @@ class Content(QObject):
     def _check_minute_change(self):
         """Metoda wywoływana przez QTimer co sekundę, sprawdza zmianę minuty."""
         current_minute = datetime.now().minute
-        if current_minute != self._last_minute:
+        if current_minute != self._last_minute and self.selected != ["Not Selected", "Not Selected"]:
             self._last_minute = current_minute
             print(f"Minuta się zmieniła! Czas: {datetime.now().strftime('%H:%M')}")
 

@@ -12,6 +12,8 @@ void setup() {
   lcd.backlight();         // Włączenie podświetlenia
   lcd.setCursor(0, 0);     // Ustaw kursor na początku pierwszej linii
   lcd.print("  Disconnected  ");
+
+  Serial.println("READY");
 }
 
 void loop() {
