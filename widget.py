@@ -27,7 +27,7 @@ class Widget(QWidget):
         self.ui.portsList.addItems(self.port.get_port_list())
         self.ui.portsList.currentTextChanged.connect(self.on_portsList_changed)
 
-        # Connect
+        # Connect connection info
         self.port.arduino_ready.connect(self.display_connection)
 
         # Add options to display
@@ -96,11 +96,10 @@ class Widget(QWidget):
         self.ui.row_1.setText(new_data[1])
 
 
-    @Slot(bool)
-    def display_connection(self, status):
+    @Slot()
+    def display_connection(self):
         """Display connection info in UI"""
-        if status:
-            self.ui.row_0.setText("Connected".center(16))
+        self.ui.row_0.setText("Connected".center(16))
 
 
     def on_display_clicked(self):

@@ -4,7 +4,7 @@ from PySide6.QtCore import QObject, Slot, QTimer, Signal
 
 
 class Port(QObject):
-    arduino_ready = Signal(bool)
+    arduino_ready = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -35,7 +35,7 @@ class Port(QObject):
             line = self.serialInst.readline().decode('utf-8').strip()
             if line == "READY":
                 self.display("Connected".center(16))
-                self.arduino_ready.emit(True)
+                self.arduino_ready.emit()
                 break
             QTimer.singleShot(100, lambda: None)
 
