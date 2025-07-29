@@ -104,7 +104,6 @@ class Widget(QWidget):
 
     def on_display_clicked(self):
         """Displays the currently selected option on the arduino screen"""
-        self.port.display("".join(self.content.get_content()))
         print(self.content.get_content())
         self.content.content_to_update.emit(self.content.get_content())
 
