@@ -10,6 +10,7 @@ class Port(QObject):
         super().__init__(parent)
         self.ports = serial.tools.list_ports.comports()
         self.serialInst = serial.Serial()
+        self.serialInst.timeout = 0.1
         self.portsList = []
         self.connected_port = None
 
