@@ -25,6 +25,10 @@ class Port(QObject):
 
     # Connect to port
     def connect(self, com) -> None:
+        # Close the port if it was open
+        if self.serialInst.is_open:
+                self.serialInst.close()
+
         for i in range(len(self.portsList)):
             if self.portsList[i].startswith(com):
                 use = str(com)
