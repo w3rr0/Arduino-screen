@@ -71,8 +71,8 @@ class Content(QObject):
         }
         responses = self.openmeteo.weather_api(self.url, params=params)
         response = responses[0]
-        current_weather = response.CurrentWeather()
-        self.content[row] = f"{current_weather.Temperature()}°C"
+        current_weather = response.Current()
+        self.content[row] = f"{round(current_weather.Variables(0).Value(), 1)}°C"
         self.selected[row] = "Weather"
 
 
