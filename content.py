@@ -96,7 +96,10 @@ class Content(QObject):
         responses = self.openmeteo.weather_api(self.url, params=params)
         response = responses[0]
         current_weather = response.Current()
-        self.content[row] = f"{city}: {round(current_weather.Variables(0).Value(), 1)}°C"
+        label = f"{city}: {round(current_weather.Variables(0).Value(), 1)}°C"
+        if len(label) > 16:
+            label = f"{round(current_weather.Variables(0).Value(), 1)}°C"
+        self.content[row] = label
         self.selected[row] = "Weather"
 
 
