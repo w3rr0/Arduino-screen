@@ -1,6 +1,8 @@
 # This Python file uses the following encoding: utf-8
 import openmeteo_requests
 import requests_cache
+import requests
+
 from datetime import datetime
 from PySide6.QtCore import QTimer, QObject, Signal
 from retry_requests import retry
@@ -29,6 +31,7 @@ class Content(QObject):
         self.retry_session = retry(self.cache_session, retries = 5, backoff_factor = 0.2)
         self.openmeteo = openmeteo_requests.Client(session = self.retry_session)
         self.url = "https://api.open-meteo.com/v1/forecast"
+        self.ip_url = "https://ipinfo.io/json"
 
 
     def _check_minute_change(self):
@@ -72,15 +75,28 @@ class Content(QObject):
 
 
     def add_temperature(self, row: int):
+        response = requests.get(self.ip_url)
+        data = response.json()
+
+        latitude = None
+        longitude = None
+        city = data.get("city")
+
+        if 'loc' in data:
+            loc_parts = data['loc'].split(',')
+            if len(loc_parts) == 2:
+                latitude = float(loc_parts[0])
+                longitude = float(loc_parts[1])
+
         params = {
-                "latitude": 52.52,
-                "longitude": 13.41,
+                "latitude": latitude,
+                "longitude": longitude,
                 "current_weather": True
         }
         responses = self.openmeteo.weather_api(self.url, params=params)
         response = responses[0]
         current_weather = response.Current()
-        self.content[row] = f"{round(current_weather.Variables(0).Value(), 1)}°C"
+        self.content[row] = f"{city}: {round(current_weather.Variables(0).Value(), 1)}°C"
         self.selected[row] = "Weather"
 
 
