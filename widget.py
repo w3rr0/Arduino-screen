@@ -23,6 +23,10 @@ class Widget(QWidget):
         self.port = port.Port()
         self.content = content.Content()
 
+        # Style text
+        self.ui.row_0.setStyleSheet("letter-spacing: 2px;")
+        self.ui.row_1.setStyleSheet("letter-spacing: 2px;")
+
         # Add options to connect
         self.ui.portsList.addItems(self.port.get_port_list())
         self.ui.portsList.currentTextChanged.connect(self.on_portsList_changed)

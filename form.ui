@@ -162,6 +162,7 @@
     <font>
      <family>Andale Mono</family>
      <pointsize>15</pointsize>
+     <kerning>true</kerning>
     </font>
    </property>
    <property name="text">
