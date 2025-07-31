@@ -11,10 +11,13 @@ class Content(QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # Initialize lists to control content
         self.content = ["",""]
         self.options = ["Not Selected", "Time", "Date", "Weather"]
         self.selected = ["Not Selected", "Not Selected"]
 
+        # Setup minute_monitor to continuous refreshing data
         self.minute_monitor = QTimer(self)
         self.minute_monitor.setInterval(1000)
         self.minute_monitor.timeout.connect(self._check_minute_change)
@@ -27,19 +30,24 @@ class Content(QObject):
         self.openmeteo = openmeteo_requests.Client(session = self.retry_session)
         self.url = "https://api.open-meteo.com/v1/forecast"
 
+
     def _check_minute_change(self):
-        """Metoda wywoływana przez QTimer co sekundę, sprawdza zmianę minuty."""
+        """
+        Method called by QTimer every second.
+        Checks the minute change, if any, updates the content using the _update_content method.
+        """
         current_minute = datetime.now().minute
         if current_minute != self._last_minute and self.selected != ["Not Selected", "Not Selected"]:
             self._last_minute = current_minute
-            print(f"Minuta się zmieniła! Czas: {datetime.now().strftime('%H:%M')}")
-
             self._update_content()
             self.content_to_update.emit(self.get_content())
 
 
     def _update_content(self):
-        """Automatycznie aktualizuje zawartość content na podstawie jego zawartości"""
+        """
+        Called by _check_minute_change.
+        Updates "content" based on what is currently selected.
+        """
         for row in range(len(self.selected)):
             if self.selected[row] == "Time":
                 self.add_time(row)
