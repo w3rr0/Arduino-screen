@@ -5,6 +5,7 @@ from PySide6.QtCore import QObject, Slot, QTimer, Signal
 
 class Port(QObject):
     arduino_ready = Signal()
+    failed_connection = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -24,10 +25,14 @@ class Port(QObject):
 
 
     # Connect to port
-    def connect(self, com) -> None:
+    def connect(self, com: str) -> None:
         # Close the port if it was open
         if self.serialInst.is_open:
                 self.serialInst.close()
+
+        # If "Not Selected" selected, do not connect and return
+        if com == "Not Selected":
+            return
 
         for i in range(len(self.portsList)):
             if self.portsList[i].startswith(com):
@@ -36,13 +41,15 @@ class Port(QObject):
         self.serialInst.port = use
         self.serialInst.open()
         self.connected_port = com
-        for _ in range(50): # 50 times * 100ms = 5 seconds
+        for _ in range(50): # 50 times * (100ms[QTimer] + 100ms[timeout]) = 10 seconds
             line = self.serialInst.readline().decode('utf-8').strip()
             if line == "READY":
                 self.display("Connected".center(16))
                 self.arduino_ready.emit()
-                break
+                return
             QTimer.singleShot(100, lambda: None)
+        # Failed to connect to the selected port
+        self.failed_connection.emit()
 
 
     # Display text on arduino screen

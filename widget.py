@@ -30,6 +30,9 @@ class Widget(QWidget):
         # Connect connection info
         self.port.arduino_ready.connect(self.display_connection)
 
+        # Connect selecting default port
+        self.port.failed_connection.connect(self.on_failed_connection)
+
         # Add options to display
         self.ui.upper.addItems(self.content.options)
         self.ui.lower.addItems(self.content.options)
@@ -53,6 +56,11 @@ class Widget(QWidget):
         """Automatically connects the port when selected"""
         print(f"Wybrano: {new_com}")
         self.port.connect(new_com)
+
+
+    @Slot()
+    def on_failed_connection(self):
+        self.ui.portsList.setCurrentIndex(0)
 
 
     @Slot(str)

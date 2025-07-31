@@ -52,6 +52,11 @@
      <pointsize>14</pointsize>
     </font>
    </property>
+   <item>
+    <property name="text">
+     <string>Not Selected</string>
+    </property>
+   </item>
   </widget>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
