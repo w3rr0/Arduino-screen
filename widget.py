@@ -18,6 +18,7 @@ class Widget(QWidget):
         super().__init__(parent)
         self.ui = Ui_Widget()
         self.ui.setupUi(self)
+        self.setWindowTitle("Arduino Screen")
 
         # Initialize program objects
         self.port = port.Port()
