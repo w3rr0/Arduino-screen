@@ -5,6 +5,7 @@ import content
 
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtCore import Slot
+from PySide6.QtGui import QMovie
 
 
 # Important:
@@ -27,6 +28,14 @@ class Widget(QWidget):
         # Style text
         self.ui.row_0.setStyleSheet("letter-spacing: 2px;")
         self.ui.row_1.setStyleSheet("letter-spacing: 2px;")
+
+
+        # Set loading animation
+        self.loading_gif = QMovie("loading_gear.gif")
+        self.ui.loading.setMovie(self.loading_gif)
+        self.ui.loading.show()
+        self.loading_gif.start()
+
 
         # Add options to connect
         self.ui.portsList.addItems(self.port.get_port_list())
@@ -113,6 +122,12 @@ class Widget(QWidget):
     def display_connection(self):
         """Display connection info in UI"""
         self.ui.row_0.setText("Connected".center(16))
+
+
+    @Slot()
+    def display_loading(self):
+        """Display loding screen"""
+        self.ui.loading.enable()
 
 
     def on_display_clicked(self):
