@@ -68,8 +68,7 @@ class Widget(QWidget):
     def on_portsList_changed(self, new_com):
         """Automatically connects the port when selected"""
         print(f"Wybrano: {new_com}")
-        task = self.port.connect(new_com)
-        with Loading(self, self.ui.loading, task):
+        with Loading(self, self.ui.loading, lambda: self.port.connect(new_com)):
             pass
 
     @Slot()
