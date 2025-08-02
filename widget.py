@@ -6,6 +6,7 @@ import content
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QMovie
+from loading import Loading
 
 
 # Important:
@@ -33,8 +34,6 @@ class Widget(QWidget):
         # Set loading animation
         self.loading_gif = QMovie("loading_gear.gif")
         self.ui.loading.setMovie(self.loading_gif)
-        self.ui.loading.show()
-        self.loading_gif.start()
 
 
         # Add options to connect
@@ -69,8 +68,9 @@ class Widget(QWidget):
     def on_portsList_changed(self, new_com):
         """Automatically connects the port when selected"""
         print(f"Wybrano: {new_com}")
-        self.port.connect(new_com)
-
+        task = self.port.connect(new_com)
+        with Loading(self, self.ui.loading, task):
+            pass
 
     @Slot()
     def on_failed_connection(self):
@@ -127,7 +127,10 @@ class Widget(QWidget):
     @Slot()
     def display_loading(self):
         """Display loding screen"""
-        self.ui.loading.enable()
+        self.ui.loading.show()
+        self.loading_gif.start()
+        #self.loading_gif.stop()
+        #self.ui.loading.hide()
 
 
     def on_display_clicked(self):

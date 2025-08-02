@@ -196,7 +196,7 @@
   </widget>
   <widget class="QLabel" name="loading">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="geometry">
     <rect>
