@@ -36,7 +36,7 @@ class Loading:
 
     def __enter__(self):
         """
-        Triggers animations and event loops
+        Triggers animations and event loops.
         """
 
         # Show animation and block UI
@@ -60,8 +60,7 @@ class Loading:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """
-        Wywoływane przy wyjściu z bloku 'with'.
-        Zatrzymuje animację i czyści po sobie.
+        Stops animations and cleans up after itself.
         """
 
         # Stop animation and unlock UI
@@ -79,6 +78,7 @@ class Loading:
 
     @Slot(object)
     def _on_task_done(self, result):
-        """Prywatny slot do przechwycenia wyniku z wątku."""
-        print(f"Menedżer kontekstu: Przechwycono wynik: {result}")
+        """
+        Stores the result from the thread.
+        """
         self.result = result
