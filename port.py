@@ -48,8 +48,8 @@ class Port(QObject):
             line = self.serialInst.readline().decode('utf-8').strip()
             if line == "READY":
                 self.arduino_ready.emit()
-                self.display("Connected".center(16))
                 utils.CONNECTED = True
+                self.display("Connected".center(16))
                 return
             QTimer.singleShot(100, lambda: None)
         # Failed to connect to the selected port

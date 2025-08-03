@@ -1,18 +1,22 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// adres I2C (najczęściej 0x27 lub 0x3F), szerokość 16, wysokość 2
+
+String processSpecialChars(String text);
+
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 const int LCD_WIDTH = 16;
 
 void setup() {
   Serial.begin(9600);
 
-  lcd.init();              // Inicjalizacja LCD
-  lcd.backlight();         // Włączenie podświetlenia
-  lcd.setCursor(0, 0);     // Ustaw kursor na początku pierwszej linii
+  // Prepare the screen
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
   lcd.print("  Disconnected  ");
 
+  // Send a ready signal
   Serial.println("READY");
 }
 
@@ -20,28 +24,48 @@ void loop() {
   if (Serial.available() > 0) {
     String msg = Serial.readString();
 
-    // Wyczyść ekran przed wyświetleniem nowej wiadomości
+    // Clear screen before new message
     lcd.clear();
 
-    if (msg.length() > LCD_WIDTH) {
-      // Pobierz pierwszą część wiadomości (16 znaków)
-      String firstLine = msg.substring(0, LCD_WIDTH);
-      
-      // Pobierz resztę wiadomości
-      String secondLine = msg.substring(LCD_WIDTH);
+    String processedMsg = processSpecialChars(msg);
 
-      // Wyświetl pierwszą część na górnej linijce
+    if (processedMsg.length() > LCD_WIDTH) {
+      // First line
       lcd.setCursor(0, 0);
-      lcd.print(firstLine);
-
-      // Wyświetl drugą część na dolnej linijce
+      lcd.print(processedMsg.substring(0, LCD_WIDTH));
+      // Second line
       lcd.setCursor(0, 1);
-      lcd.print(secondLine);
-
+      lcd.print(processedMsg.substring(LCD_WIDTH));
     } else {
-      // Jeśli wiadomość jest krótka, wyświetl ją normalnie
+      // Short message
       lcd.setCursor(0, 0);
-      lcd.print(msg);
+      lcd.print(processedMsg);
+    }
     } 
   }
+  
+
+// Correct display of the degree sign
+String processSpecialChars(String text) {
+  String processedText = "";
+  char lastChar = 0;
+
+  for (int i = 0; i < text.length(); i++) {
+    char currentChar = text.charAt(i);
+
+    /*
+      Checks the previous and current character to determine if there should
+      be a degree sign at that position (due to Python's encoding).
+    */
+    if ((byte)lastChar == 0xC2 && (byte)currentChar == 0xB0) {
+      processedText += (char)223; // Add degree symbol
+      lastChar = 0; // Reset previous character
+    } else {
+      if ((byte)currentChar != 0xC2 && (byte)currentChar != 0xC3 && (byte)currentChar != 0xC4 && (byte)currentChar != 0xC5) {
+        processedText += currentChar;
+      }
+      lastChar = currentChar;
+    }
+  }
+  return processedText;
 }

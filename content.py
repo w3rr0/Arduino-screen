@@ -2,6 +2,7 @@
 import openmeteo_requests
 import requests_cache
 import requests
+import unicodedata
 
 from datetime import datetime
 from PySide6.QtCore import QTimer, QObject, Signal
@@ -109,6 +110,13 @@ class Content(QObject):
 
 
     def get_content(self):
-        print([item.center(16) for item in self.content])
-        return [item.center(16) for item in self.content]
+        def strip_accents(text: str) -> str:
+            normalized_text = unicodedata.normalize('NFD', text)
+            stripped_text = ''.join(
+                char for char in normalized_text if not unicodedata.combining(char)
+            )
+            return stripped_text
+
+        return [strip_accents(item.center(16)) for item in self.content]
+
 
