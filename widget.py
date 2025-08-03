@@ -2,11 +2,12 @@
 import sys
 import port
 import content
+import utils
+from loading import Loading
 
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QMovie
-from loading import Loading
 
 
 # Important:
@@ -110,6 +111,7 @@ class Widget(QWidget):
             self.content.clear_row(1)
 
 
+    @utils.if_connected
     @Slot(list)
     def update_display_labels(self, new_data):
         """Displays the current text from the arduino screen"""
@@ -117,21 +119,14 @@ class Widget(QWidget):
         self.ui.row_1.setText(new_data[1])
 
 
+    @utils.if_connected
     @Slot()
     def display_connection(self):
         """Display connection info in UI"""
         self.ui.row_0.setText("Connected".center(16))
 
 
-    @Slot()
-    def display_loading(self):
-        """Display loding screen"""
-        self.ui.loading.show()
-        self.loading_gif.start()
-        #self.loading_gif.stop()
-        #self.ui.loading.hide()
-
-
+    @utils.if_connected
     def on_display_clicked(self):
         """Displays the currently selected option on the arduino screen"""
         print(self.content.get_content())
