@@ -7,7 +7,7 @@ from loading import Loading
 
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtCore import Slot
-from PySide6.QtGui import QMovie
+from PySide6.QtGui import QMovie, QIcon
 
 
 # Important:
@@ -22,6 +22,7 @@ class Widget(QWidget):
         self.ui = Ui_Widget()
         self.ui.setupUi(self)
         self.setWindowTitle("Arduino Screen")
+        self.setWindowIcon(QIcon("screen.png"))
 
         # Initialize program objects
         self.port = port.Port()
