@@ -11,6 +11,7 @@ from retry_requests import retry
 
 class Content(QObject):
     content_to_update = Signal(list)
+    display_new = Signal(list)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -19,6 +20,7 @@ class Content(QObject):
         self.content = ["",""]
         self.options = ["Not Selected", "Time", "Date", "Weather"]
         self.selected = ["Not Selected", "Not Selected"]
+        self.displayed = ["Not Selected", "Not Selected"]
 
         # Setup minute_monitor to continuous refreshing data
         self.minute_monitor = QTimer(self)
@@ -41,38 +43,41 @@ class Content(QObject):
         Checks the minute change, if any, updates the content using the _update_content method.
         """
         current_minute = datetime.now().minute
-        if current_minute != self._last_minute and self.selected != ["Not Selected", "Not Selected"]:
+        if current_minute != self._last_minute and self.displayed != ["Not Selected", "Not Selected"]:
             self._last_minute = current_minute
             self._update_content()
             self.content_to_update.emit(self.get_content())
+            self.display_new.emit(self.get_content())
 
 
     def _update_content(self):
         """
         Called by _check_minute_change.
-        Updates "content" based on what is currently selected.
+        Updates "content" based on what is currently displayed.
         """
-        for row in range(len(self.selected)):
-            if self.selected[row] == "Time":
+        for row in range(len(self.displayed)):
+            if self.displayed[row] == "Time":
                 self.add_time(row)
-            elif self.selected[row] == "Date":
+            elif self.displayed[row] == "Date":
                 self.add_date(row)
-            elif self.selected[row] == "Weather":
+            elif self.displayed[row] == "Weather":
                 self.add_temperature(row)
+            elif self.displayed[row] == "Not Selected":
+                self.clear_row(row)
 
 
     def add_time(self, row: int):
         time = datetime.now()
         time = time.strftime("%H:%M")
         self.content[row] = time
-        self.selected[row] = "Time"
+        self.displayed[row] = "Time"
 
 
     def add_date(self, row: int):
         date = datetime.now()
         date = date.strftime("%d.%m.%Y")
         self.content[row] = date
-        self.selected[row] = "Date"
+        self.displayed[row] = "Date"
 
 
     def add_temperature(self, row: int):
@@ -101,12 +106,19 @@ class Content(QObject):
         if len(label) > 16:
             label = f"{round(current_weather.Variables(0).Value(), 1)}°C"
         self.content[row] = label
-        self.selected[row] = "Weather"
+        self.displayed[row] = "Weather"
 
 
-    def clear_row(self, row: int):
+    def clear_row(self, row: int) -> None:
         self.content[row] = ""
-        self.selected[row] = "Not Selected"
+        self.displayed[row] = "Not Selected"
+
+
+    def update_displayed(self) -> None:
+        self.displayed = list(self.selected)
+        self._update_content()
+        self.content_to_update.emit(self.get_content())
+        self.display_new.emit(self.get_content())
 
 
     def get_content(self):

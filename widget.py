@@ -62,7 +62,7 @@ class Widget(QWidget):
 
         # Connect auto refresh func to slot
         self.content.content_to_update.connect(self.port.auto_update)
-        self.content.content_to_update.connect(self.update_display_labels)
+        self.content.display_new.connect(self.update_display_labels)
 
         # Display "Disconnected" after app close
         app = QApplication.instance()
@@ -79,41 +79,19 @@ class Widget(QWidget):
 
     @Slot()
     def on_failed_connection(self):
-        self.ui.portsList.setCurrentIndex(0)
+        self.ui.portsList.setCurrentIndex(0)    # Not Selected
 
 
     @Slot(str)
     def on_upper_changed(self, new_data):
-        """Automatically changes the upper content when selected"""
-        if new_data == "Date":
-            print("new date upper")
-            self.content.add_date(0)
-        elif new_data == "Time":
-            print("new time upper")
-            self.content.add_time(0)
-        elif new_data == "Weather":
-            print("new weather upper")
-            self.content.add_temperature(0)
-        elif new_data == "Not Selected":
-            print("Clear row upper")
-            self.content.clear_row(0)
+        """Changes the upper selected"""
+        self.content.selected[0] = new_data
 
 
     @Slot(str)
     def on_lower_changed(self, new_data):
-        """Automatically changes the lower content when selected"""
-        if new_data == "Date":
-            print("new date lower")
-            self.content.add_date(1)
-        elif new_data == "Time":
-            print("new time lower")
-            self.content.add_time(1)
-        elif new_data == "Weather":
-            print("new weather lower")
-            self.content.add_temperature(1)
-        elif new_data == "Not Selected":
-            print("Clear row lower")
-            self.content.clear_row(1)
+        """Changes the lower selected"""
+        self.content.selected[1] = new_data
 
 
     @utils.if_connected
@@ -134,8 +112,7 @@ class Widget(QWidget):
     @utils.if_connected
     def on_display_clicked(self):
         """Displays the currently selected option on the arduino screen"""
-        print(self.content.get_content())
-        self.content.content_to_update.emit(self.content.get_content())
+        self.content.update_displayed()
 
 
 
