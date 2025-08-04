@@ -20,42 +20,25 @@ class TaskThread(QThread):
             self.task_done.emit(self.result)
 
 class Loading:
-    def __init__(self, parent_widget, loading_label, task_function):
-        """
-        Initialize context manager.
-        """
+    def __init__(self, parent_widget, loading_label):
         self.parent_widget = parent_widget
         self.loading_label = loading_label
-        self.task_function = task_function
         self.gif_path = "loading_gear.gif"
 
         self.movie = QMovie(self.gif_path)
-        self.result = None
-        self.thread = None
-        self.loop = None
+        self.loading_label.setMovie(self.movie)
+
+        self._thread = None
+        self._result = None
 
     def __enter__(self):
         """
         Triggers animations and event loops.
         """
 
-        # Show animation and block UI
         self.parent_widget.setEnabled(False)
-        self.loading_label.setMovie(self.movie)
-        self.movie.start()
         self.loading_label.show()
-
-        # Config and start main thread
-        self.thread = TaskThread(self.task_function)
-        self.thread.task_done.connect(self._on_task_done)
-
-        # Create local loop to ensure that the UI works
-        self.loop = QEventLoop()
-        self.thread.finished.connect(self.loop.quit)
-
-        self.thread.start()
-        self.loop.exec()
-
+        self.movie.start()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -68,10 +51,10 @@ class Loading:
         self.loading_label.hide()
         self.parent_widget.setEnabled(True)
 
-        # Clean
-        if self.thread.isRunning():
-            self.thread.quit()
-            self.thread.wait()
+        # Make sure the thread is finished
+        if self._thread and self._thread.isRunning():
+            self._thread.quit()
+            self._thread.wait()
 
         # Show exceptions
         return False
@@ -81,4 +64,21 @@ class Loading:
         """
         Stores the result from the thread.
         """
-        self.result = result
+        self._result = result
+
+
+    def run(self, task_function):
+        """
+        Wykonuje podaną funkcję w osobnym wątku, utrzymując responsywność UI.
+        Czeka na zakończenie zadania i zwraca jego wynik.
+        """
+        self._thread = TaskThread(task_function)
+        self._thread.task_done.connect(self._on_task_done)
+
+        loop = QEventLoop()
+        self._thread.finished.connect(loop.quit)
+
+        self._thread.start()
+        loop.exec()
+
+        return self._result

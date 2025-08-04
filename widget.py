@@ -24,9 +24,6 @@ class Widget(QWidget):
         self.setWindowTitle("Arduino Screen")
         self.setWindowIcon(QIcon("screen.png"))
 
-        # Initialize program objects
-        self.port = port.Port()
-        self.content = content.Content()
 
         # Style text
         self.ui.row_0.setStyleSheet("letter-spacing: 2px;")
@@ -36,6 +33,12 @@ class Widget(QWidget):
         # Set loading animation
         self.loading_gif = QMovie("loading_gear.gif")
         self.ui.loading.setMovie(self.loading_gif)
+
+
+        # Initialize program objects
+        self.port = port.Port()
+        self.content = content.Content()
+        self.loader = Loading(self, self.ui.loading)
 
 
         # Add options to connect
@@ -70,8 +73,9 @@ class Widget(QWidget):
     def on_portsList_changed(self, new_com):
         """Automatically connects the port when selected"""
         print(f"Wybrano: {new_com}")
-        with Loading(self, self.ui.loading, lambda: self.port.connect(new_com)):
-            pass
+        with self.loader as load:
+            load.run(lambda: self.port.connect(new_com))
+
 
     @Slot()
     def on_failed_connection(self):
