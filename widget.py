@@ -46,7 +46,7 @@ class Widget(QWidget):
 
         def update_ports_list():
             """
-
+            Updates the list of available ports before expanding it
             """
             current_selection = self.ui.portsList.currentText()
 
