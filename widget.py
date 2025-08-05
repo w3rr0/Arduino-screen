@@ -45,9 +45,18 @@ class Widget(QWidget):
         org_popup = self.ui.portsList.showPopup
 
         def update_ports_list():
+            """
+
+            """
+            current_selection = self.ui.portsList.currentText()
+
             self.ui.portsList.clear()
             current_ports = ["Not Selected"] + self.port.get_port_list()
             self.ui.portsList.addItems(current_ports)
+
+            if current_selection in current_ports:
+                index = current_ports.index(current_selection)
+                self.ui.portsList.setCurrentIndex(index)
 
             org_popup()
 
