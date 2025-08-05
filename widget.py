@@ -72,14 +72,14 @@ class Widget(QWidget):
     @Slot(str)
     def on_portsList_changed(self, new_com):
         """Automatically connects the port when selected"""
-        print(f"Wybrano: {new_com}")
         with self.loader as load:
             load.run(lambda: self.port.connect(new_com))
 
 
     @Slot()
     def on_failed_connection(self):
-        self.ui.portsList.setCurrentIndex(0)    # Not Selected
+        """set Not Selected"""
+        self.ui.portsList.setCurrentIndex(0)
 
 
     @Slot(str)
@@ -112,7 +112,8 @@ class Widget(QWidget):
     @utils.if_connected
     def on_display_clicked(self):
         """Displays the currently selected option on the arduino screen"""
-        self.content.update_displayed()
+        with self.loader as load:
+            load.run(lambda: self.content.update_displayed())
 
 
 
