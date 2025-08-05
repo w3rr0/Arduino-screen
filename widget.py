@@ -42,7 +42,16 @@ class Widget(QWidget):
 
 
         # Add options to connect
-        self.ui.portsList.addItems(self.port.get_port_list())
+        org_popup = self.ui.portsList.showPopup
+
+        def update_ports_list():
+            self.ui.portsList.clear()
+            current_ports = ["Not Selected"] + self.port.get_port_list()
+            self.ui.portsList.addItems(current_ports)
+
+            org_popup()
+
+        self.ui.portsList.showPopup = update_ports_list
         self.ui.portsList.currentTextChanged.connect(self.on_portsList_changed)
 
         # Connect connection info

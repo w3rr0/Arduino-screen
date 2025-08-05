@@ -35,7 +35,6 @@ class Loading:
         """
         Triggers animations and event loops.
         """
-
         self.parent_widget.setEnabled(False)
         self.loading_label.show()
         self.movie.start()
@@ -45,7 +44,6 @@ class Loading:
         """
         Stops animations and cleans up after itself.
         """
-
         # Stop animation and unlock UI
         self.movie.stop()
         self.loading_label.hide()
