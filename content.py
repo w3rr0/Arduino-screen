@@ -19,7 +19,7 @@ class Content(QObject):
 
         # Initialize lists to control content
         self.content = ["",""]
-        self.options = ["Not Selected", "Time", "Date", "Weather", "RAM Usage", "RAM Available"]
+        self.options = ["Not Selected", "Time", "Date", "Weather", "RAM Usage", "RAM Available", "CPU Usage"]
         self.selected = ["Not Selected", "Not Selected"]
         self.displayed = ["Not Selected", "Not Selected"]
 
@@ -67,6 +67,8 @@ class Content(QObject):
                 self.add_ram(row, type="usage")
             elif self.displayed[row] == "RAM Available":
                 self.add_ram(row, type="available")
+            elif self.displayed[row] == "CPU Usage":
+                self.add_cpu(row)
             elif self.displayed[row] == "Not Selected":
                 self.clear_row(row)
 
@@ -125,6 +127,13 @@ class Content(QObject):
         elif type == "available":
             self.content[row] = ram_available
             self.displayed[row] = "RAM Available"
+
+
+    def add_cpu(self, row: int):
+        cpu_usage = psutil.cpu_percent(interval=1)
+
+        self.content[row] = f"CPU Usage: {cpu_usage}%"
+        self.displayed[row] = "CPU Usage"
 
 
 
