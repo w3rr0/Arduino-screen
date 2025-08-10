@@ -4,6 +4,7 @@ import requests_cache
 import requests
 import unicodedata
 import psutil
+import time
 
 from datetime import datetime
 from PySide6.QtCore import QTimer, QObject, Signal
@@ -19,7 +20,7 @@ class Content(QObject):
 
         # Initialize lists to control content
         self.content = ["",""]
-        self.options = ["Not Selected", "Time", "Date", "Weather", "RAM Usage", "RAM Available", "CPU Usage"]
+        self.options = ["Not Selected", "Time", "Date", "Weather", "RAM Usage", "RAM Available", "CPU Usage", "Network"]
         self.selected = ["Not Selected", "Not Selected"]
         self.displayed = ["Not Selected", "Not Selected"]
 
@@ -69,6 +70,8 @@ class Content(QObject):
                 self.add_ram(row, type="available")
             elif self.displayed[row] == "CPU Usage":
                 self.add_cpu(row)
+            elif self.displayed[row] == "Network":
+                self.add_network(row)
             elif self.displayed[row] == "Not Selected":
                 self.clear_row(row)
 
@@ -135,6 +138,18 @@ class Content(QObject):
         self.content[row] = f"CPU Usage: {cpu_usage}%"
         self.displayed[row] = "CPU Usage"
 
+
+    def add_network(self, row: int) -> None:
+        start = psutil.net_io_counters()
+        time.sleep(1)
+        end = psutil.net_io_counters()
+
+        download_speed = (end.bytes_recv - start.bytes_recv) / 1048576 # 1024**2
+        upload_speed = (end.bytes_sent - start.bytes_sent) / 1048576 # 1024**2
+        net = f"{download_speed:.1f}/{upload_speed:.1f} MB/s"
+
+        self.content[row] = net
+        self.displayed[row] = "Network"
 
 
 
