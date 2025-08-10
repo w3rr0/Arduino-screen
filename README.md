@@ -71,6 +71,7 @@ Options that can be displayed:
 - RAM Usage
 - RAM Available
 - CPU Usage
+- Network
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
