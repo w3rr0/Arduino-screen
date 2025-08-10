@@ -56,7 +56,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![product-screenshot]  <!-- And other screens not added yet -->
+<img src="screens/Disconnected.png" alt="Disconnected" width="300">
+<img src="screens/Connected.png" alt="Connected" width="300">
+<img src="screens/Displayed.png" alt="Displayed" width="300">
 
 A windowed application that allows you to display the most useful information on the Arduino screen when your main displays are occupied with other things.
 The compact size of this screen allows you to place it in the most convenient location, such as under the monitor or above the keyboard.
@@ -190,4 +192,3 @@ Project Link: [https://github.com/w3rr0/Arduino-screen](https://github.com/w3rr0
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [license-shield]: https://img.shields.io/github/license/w3rr0/Arduino-screen.svg?style=for-the-badge
 [license-url]: https://github.com/w3rr0/Arduino-screen/LICENSE.txt
-[product-screenshot]: screen.png
