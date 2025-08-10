@@ -3,6 +3,7 @@ import openmeteo_requests
 import requests_cache
 import requests
 import unicodedata
+import psutil
 
 from datetime import datetime
 from PySide6.QtCore import QTimer, QObject, Signal
@@ -18,7 +19,7 @@ class Content(QObject):
 
         # Initialize lists to control content
         self.content = ["",""]
-        self.options = ["Not Selected", "Time", "Date", "Weather"]
+        self.options = ["Not Selected", "Time", "Date", "Weather", "RAM Usage", "RAM Available"]
         self.selected = ["Not Selected", "Not Selected"]
         self.displayed = ["Not Selected", "Not Selected"]
 
@@ -62,6 +63,10 @@ class Content(QObject):
                 self.add_date(row)
             elif self.displayed[row] == "Weather":
                 self.add_temperature(row)
+            elif self.displayed[row] == "RAM Usage":
+                self.add_ram(row, type="usage")
+            elif self.displayed[row] == "RAM Available":
+                self.add_ram(row, type="available")
             elif self.displayed[row] == "Not Selected":
                 self.clear_row(row)
 
@@ -107,6 +112,21 @@ class Content(QObject):
             label = f"{round(current_weather.Variables(0).Value(), 1)}°C"
         self.content[row] = label
         self.displayed[row] = "Weather"
+
+
+    def add_ram(self, row: int, type: str):
+        ram = psutil.virtual_memory()
+        ram_usage = f"RAM Usage: {ram.percent}%"
+        ram_available = f"Free RAM: {ram.available / (1024**3):.1f}GB"
+
+        if type == "usage":
+            self.content[row] = ram_usage
+            self.displayed[row] = "RAM Usage"
+        elif type == "available":
+            self.content[row] = ram_available
+            self.displayed[row] = "RAM Available"
+
+
 
 
     def clear_row(self, row: int) -> None:
