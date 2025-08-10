@@ -62,6 +62,14 @@ A windowed application that allows you to display the most useful information on
 The compact size of this screen allows you to place it in the most convenient location, such as under the monitor or above the keyboard.
 You decide what information to display, and you can change it whenever you need it.
 
+Options that can be displayed:
+- Time
+- Date
+- Weather
+- RAM Usage
+- RAM Available
+- CPU Usage
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
