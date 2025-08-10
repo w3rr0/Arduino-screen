@@ -88,33 +88,33 @@ class Widget(QWidget):
 
 
     @Slot(str)
-    def on_portsList_changed(self, new_com):
+    def on_portsList_changed(self, new_com: str) -> None:
         """Automatically connects the port when selected"""
         with self.loader as load:
             load.run(lambda: self.port.connect(new_com))
 
 
     @Slot()
-    def on_failed_connection(self):
+    def on_failed_connection(self) -> None:
         """set Not Selected"""
         self.ui.portsList.setCurrentIndex(0)
 
 
     @Slot(str)
-    def on_upper_changed(self, new_data):
+    def on_upper_changed(self, new_data: str) -> None:
         """Changes the upper selected"""
         self.content.selected[0] = new_data
 
 
     @Slot(str)
-    def on_lower_changed(self, new_data):
+    def on_lower_changed(self, new_data: str) -> None:
         """Changes the lower selected"""
         self.content.selected[1] = new_data
 
 
     @utils.if_connected
     @Slot(list)
-    def update_display_labels(self, new_data):
+    def update_display_labels(self, new_data) -> None:
         """Displays the current text from the arduino screen"""
         self.ui.row_0.setText(new_data[0])
         self.ui.row_1.setText(new_data[1])
@@ -122,13 +122,13 @@ class Widget(QWidget):
 
     @utils.if_connected
     @Slot()
-    def display_connection(self):
+    def display_connection(self) -> None:
         """Display connection info in UI"""
         self.ui.row_0.setText("Connected".center(16))
 
 
     @utils.if_connected
-    def on_display_clicked(self):
+    def on_display_clicked(self) -> None:
         """Displays the currently selected option on the arduino screen"""
         with self.loader as load:
             load.run(lambda: self.content.update_displayed())

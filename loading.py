@@ -54,6 +54,10 @@ class Loading:
             self._thread.quit()
             self._thread.wait()
 
+        # Safe delete thread object
+        if self._thread:
+            self._thread.deleteLater()
+
         # Show exceptions
         return False
 
