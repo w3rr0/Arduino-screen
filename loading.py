@@ -11,7 +11,7 @@ class TaskThread(QThread):
         self.task_function = actual_task_function
         self.result = None
 
-    def run(self):
+    def run(self) -> None:
         try:
             self.result = self.task_function()
         except Exception:
@@ -62,7 +62,7 @@ class Loading:
         return False
 
     @Slot(object)
-    def _on_task_done(self, result):
+    def _on_task_done(self, result) -> None:
         """
         Stores the result from the thread.
         """

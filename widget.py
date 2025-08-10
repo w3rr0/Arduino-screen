@@ -44,7 +44,7 @@ class Widget(QWidget):
         # Add options to connect
         org_popup = self.ui.portsList.showPopup
 
-        def update_ports_list():
+        def update_ports_list() -> None:
             """
             Updates the list of available ports before expanding it
             """

@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
 from functools import wraps
 
-CONNECTED = False
+CONNECTED: bool = False
 
 def if_connected(func):
     """

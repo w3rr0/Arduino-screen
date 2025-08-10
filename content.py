@@ -38,7 +38,7 @@ class Content(QObject):
         self.ip_url = "https://ipinfo.io/json"
 
 
-    def _check_minute_change(self):
+    def _check_minute_change(self) -> None:
         """
         Method called by QTimer every second.
         Checks the minute change, if any, updates the content using the _update_content method.
@@ -51,7 +51,7 @@ class Content(QObject):
             self.display_new.emit(self.get_content())
 
 
-    def _update_content(self):
+    def _update_content(self) -> None:
         """
         Called by _check_minute_change.
         Updates "content" based on what is currently displayed.
@@ -73,21 +73,21 @@ class Content(QObject):
                 self.clear_row(row)
 
 
-    def add_time(self, row: int):
+    def add_time(self, row: int) -> None:
         time = datetime.now()
         time = time.strftime("%H:%M")
         self.content[row] = time
         self.displayed[row] = "Time"
 
 
-    def add_date(self, row: int):
+    def add_date(self, row: int) -> None:
         date = datetime.now()
         date = date.strftime("%d.%m.%Y")
         self.content[row] = date
         self.displayed[row] = "Date"
 
 
-    def add_temperature(self, row: int):
+    def add_temperature(self, row: int) -> None:
         response = requests.get(self.ip_url)
         data = response.json()
 
@@ -116,7 +116,7 @@ class Content(QObject):
         self.displayed[row] = "Weather"
 
 
-    def add_ram(self, row: int, type: str):
+    def add_ram(self, row: int, type: str) -> None:
         ram = psutil.virtual_memory()
         ram_usage = f"RAM Usage: {ram.percent}%"
         ram_available = f"Free RAM: {ram.available / (1024**3):.1f}GB"
@@ -129,7 +129,7 @@ class Content(QObject):
             self.displayed[row] = "RAM Available"
 
 
-    def add_cpu(self, row: int):
+    def add_cpu(self, row: int) -> None:
         cpu_usage = psutil.cpu_percent(interval=1)
 
         self.content[row] = f"CPU Usage: {cpu_usage}%"
@@ -150,7 +150,7 @@ class Content(QObject):
         self.display_new.emit(self.get_content())
 
 
-    def get_content(self):
+    def get_content(self) -> list:
         def strip_accents(text: str) -> str:
             normalized_text = unicodedata.normalize('NFD', text)
             stripped_text = ''.join(

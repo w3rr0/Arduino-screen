@@ -58,12 +58,12 @@ class Port(QObject):
 
     # Display text on arduino screen
     @utils.if_connected
-    def display(self, text: str):
+    def display(self, text: str) -> None:
         self.serialInst.write(text.encode('utf-8'))
 
 
     # Function for auto updates
     @utils.if_connected
     @Slot(list)
-    def auto_update(self, new_content: list):
+    def auto_update(self, new_content: list) -> None:
         self.display("".join(new_content))
